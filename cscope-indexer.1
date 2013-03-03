@@ -4,7 +4,7 @@ cscope-indexer \- Script to index files for cscope
 
 .SH SYNOPSIS
 .B cscope-indexer [\fI-v\fR] [\fI-f database_file\fR] [\fI-i list_file\fR]
-[\fI-l\fR] [\fI-r\fR]
+[\fI-k\fR] [\fI-l\fR] [\fI-r\fR]
 
 .SH DESCRIPTION
 This script generates a list of files to index
@@ -37,6 +37,10 @@ Specifies the cscope database file (default: cscope.out).
 .B \-i list_file
 Specifies the name of the file into which the list of files
 to index is placed (default: cscope.files).
+
+.TP
+.B \-k
+Kernel mode. Don't use /usr/include for #include files.
 
 .TP
 .B \-l

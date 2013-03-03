@@ -42,7 +42,7 @@
 #
 # Usage:
 #
-#     cscope-indexer [ -v ] [-f database_file ] [-i list_file ] [ -l ] [ -r ]
+#     cscope-indexer [ -v ] [-f database_file ] [-i list_file ] [ -k ] [ -l ] [ -r ]
 #
 # where:
 #
@@ -52,6 +52,9 @@
 #     -i list_file
 #          Specifies the name of the file into which the list of files
 #          to index is placed (default: cscope.files).
+#
+#     -k
+#          Kernel mode. Don't use /usr/include for #include files. 
 #
 #     -l
 #          Suppress the generation/updating of the cscope database
@@ -66,6 +69,7 @@
 #          Be verbose.  Output simple progress messages.
 #
 #
+#
 ###############################################################################
 set -e
 
@@ -77,6 +81,7 @@ LIST_ONLY=
 DIR='.'
 LIST_FILE='cscope.files'
 DATABASE_FILE='cscope.out'
+KERNEL_MODE=
 RECURSE=
 VERBOSE=
 export DIR RECURSE			# Need to pass these to subprocesses
@@ -101,6 +106,9 @@ do
 	fi
 	LIST_FILE="$2"
 	shift
+	;;
+	-k)
+	KERNEL_MODE=1
 	;;
     -l)
 	LIST_ONLY=1
@@ -156,7 +164,12 @@ then
     echo "Indexing files ..."
 fi
 
-cscope -b -i $LIST_FILE -f $DATABASE_FILE
+if [ "X$KERNEL_MODE" != "X" ]
+then
+    cscope -b -i $LIST_FILE -f $DATABASE_FILE -k
+else
+    cscope -b -i $LIST_FILE -f $DATABASE_FILE
+fi
 
 if [ "X$VERBOSE" != "X" ]
 then
